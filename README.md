@@ -1,89 +1,66 @@
-**Vitamin Ordering System**
+# 💊 Object-Oriented Vitamin Ordering System
 
-This project was created for the Object-Oriented Programming coursework. It demonstrates the use of design patterns and good coding practices through a simple console-based Vitamin Ordering System.
+A Java-based, console application that provides personalized nutritional recommendations and customizable product orders, built to demonstrate core Object-Oriented Programming (OOP) principles and classic Design Patterns.
 
-**How it works**
-1.	The system asks for the user’s age.
-2.	If the user is older than 12, it also asks for their gender.
-3.	Recommendations differ based on gender (male/female).
-4.	Using this information, the system suggests suitable vitamins.
-5.	The user selects one of the recommended options.
-6.	They choose a form (tablets, capsules, gummies, liquid).
-7.	They choose a brand (generic, premium, organic, pharma).
-8.	They choose a packaging type (glass bottle, plastic bottle, eco-pack, container).
-9.	They choose a flavour (orange, strawberry, mint, unflavoured) only if they selected gummies or liquid.
-10.	They choose a size (30, 60, 120). Liquid vitamins cannot be ordered in 120-count. The system blocks this and asks again.
-11.	The user can undo the last customisation step.
-12.	They can place the order or cancel it.
-13.	The system displays notifications after every action.
-14.	After a successful order, the system offers an optional weekly or monthly subscription. Users may also choose “no subscription”.
+---
 
-**Main features**
+## 📌 Project Overview
 
-1.	Vitamin recommendations based on age and gender
-2.	Brand customisation (generic, premium, organic, pharma)
-3.	Form customisation (tablets, capsules, gummies, liquid)
-4.	Packaging customisation (glass bottle, plastic bottle, eco-pack, container)
-5.	Flavour customisation for gummies and liquid only
-6.	Size customisation (30, 60, 120) with validation
-7.	Mutually exclusive rule: liquid vitamins cannot be ordered in 120-count
-8.	Undo functionality using a history stack
-9.	Notifications for every user action (Observer pattern)
-10.	Strong input validation to prevent invalid choices or crashes
-11.	Singleton order management — only one active order at a time
-12.	Optional subscription offer (weekly or monthly) after order placement
+Developed for Object-Oriented Programming coursework, this application simulates a complete e-commerce customization and ordering workflow. It captures user profile data (age and gender), recommends tailored supplements, applies customizable attributes through dynamic decorators, and processes orders through a controlled state pipeline.
 
-Design patterns used
+---
 
-**Factory Method**
+## ✨ System Workflow & Features
 
-Turns the user’s text input into the correct vitamin object.
+1. **Smart Recommendations:** Suggests specific vitamins based on user age and gender rules.
+2. **Multi-Stage Customization:**
+   * **Form Selection:** Tablets, Capsules, Gummies, or Liquid.
+   * **Brand Tiering:** Generic, Premium, Organic, or Pharma.
+   * **Packaging:** Glass bottle, Plastic bottle, Eco-pack, or Container.
+   * **Flavoring:** Conditionally enabled for Gummies and Liquid (Orange, Strawberry, Mint, Unflavored).
+   * **Sizing & Validation:** Offers 30, 60, or 120-count options.
+3. **Business Rule Enforcement:** Enforces mutually exclusive constraints (e.g., blocking 120-count orders for liquid vitamins).
+4. **Undo Functionality:** Reverts the last customization step using a history stack.
+5. **Real-time Notifications:** Dispatches state update events after every user action.
+6. **Subscription Management:** Offers optional weekly or monthly recurring subscriptions post-checkout.
 
-**Decorator**
+---
 
-Adds customisations (form + size) to a vitamin without changing the base class.
+## 📐 Design Patterns Applied
 
-**BrandDecorator**
+| Design Pattern | Implementation Role in Architecture |
+| :--- | :--- |
+| **Factory Method** | Instantiates concrete vitamin objects (`Omega3`, `Calcium`, `VitaminB12`, etc.) from user inputs. |
+| **Decorator** | Dynamically wraps base vitamin objects with customization layers (`FormDecorator`, `BrandDecorator`, `PackagingDecorator`, `FlavorDecorator`, `SizeDecorator`) and updates price calculation dynamically. |
+| **Singleton** | Ensures a single active `Order` state manager exists across the application runtime. |
+| **Observer** | Implements `Notifier` and `ConsoleNotification` listeners to broadcast real-time state updates upon order mutation. |
 
-Adds the brand level to the vitamin and adjusts price.
+---
 
-**Singleton**
+## 📁 Class Hierarchy & System Structure
 
-Makes sure there is only one order active throughout the program.
+* **`Vitamin` (Abstract Base Class):** Defines shared supplement attributes and contract methods.
+* **Concrete Supplements:** `Omega3`, `Omega6`, `Calcium`, `Iron`, `Magnesium`, `VitaminB12`.
+* **`VitaminDecorator` (Abstract Decorator):** Base wrapper extending `Vitamin` to allow dynamic feature attachment.
+* **Concrete Decorators:** `FormDecorator`, `BrandDecorator`, `PackagingDecorator`, `FlavorDecorator`, `SizeDecorator`.
+* **`Customer`:** Encapsulates demographic data (age, gender).
+* **`VitaminRecommender`:** Implements rule-based filtering for supplement suggestions.
+* **`VitaminFactory`:** Handles object instantiation via input mapping.
+* **`Order` (Singleton):** Manages active order lifecycle, decorator stacks, history state tracking (undo logic), and notifications.
+* **`Notifier` / `NotificationListener` (Observer):** Event-broadcasting engine for system event tracking.
+* **`Main`:** Handles CLI input streams, application loop state, and output presentation.
 
-**Observer**
+---
 
-Sends notifications every time the order changes.
+## 🚀 Getting Started
 
-These patterns keep the code clean, flexible, and easy to extend.
+### Prerequisites
+* **Java Development Kit (JDK):** Version 8 or higher
+* **IDE:** IntelliJ IDEA, Eclipse, NetBeans, or VS Code
 
-**System Structure**
+### Execution Instructions
 
-1.	**Vitamin (abstract)** is base class for all vitamins. Defines shared attributes and abstract methods.
-2.	**Omega3, Omega6, Calcium, Iron, Magnesium, VitaminB12** are concrete vitamin types, each with its own name and base price.
-3.	**VitaminDecorator (abstract)** is base decorator class. Wraps a Vitamin object and allows additional features to be added dynamically.
-4.	**FormDecorator, BrandDecorator, PackagingDecorator, FlavorDecorator, SizeDecorator** are concrete decorators that add customisation layers such as form, brand, packaging type, flavour, and size.
-5.	**Customer** stores user information such as age and gender.
-6.	**VitaminRecommender** suggests suitable vitamins based on the customer’s profile.
-7.	**VitaminFactory** creates concrete Vitamin objects from user input using the Factory Method pattern.
-8.	**Order (Singleton)** manages the active vitamin order. Applies decorators, handles undo functionality, sends notifications, and processes order placement or cancellation.
-9.	**Notifier** + **NotificationListener** (Observer Pattern) **Notifier** manages listeners and broadcasts updates. **ConsoleNotification** receives messages and displays them to the user.
-10.	**Main** controls the application flow, handles all user input, and coordinates the system components.
-
-**How to run**
-1.	Open the project in IntelliJ IDEA or any Java IDE.
-2.	Make sure all .java files are in the same package or folder.
-3.	Run Main.java.
-4.	Follow the instructions shown in the console.
-
-
-Some parts of this coursework were supported using AI tools.
-AI assistance was used only for:
-
-•	generating early ideas and planning the system structure
-
-•	suggesting class names, method names, and overall architecture
-
-•	reviewing code when errors occurred, and helping identify bugs
-
-All final code, logic, implementation decisions, and testing were completed by me.
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/YOUR-USERNAME/vitamin-ordering-system.git](https://github.com/YOUR-USERNAME/vitamin-ordering-system.git)
+   cd vitamin-ordering-system
